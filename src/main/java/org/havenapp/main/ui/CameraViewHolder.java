@@ -206,13 +206,11 @@ public class CameraViewHolder {
 	 */
 	public void startCamera() {
 
-
         updateCamera();
 
         cameraView.setPlaySounds(false);
         cameraView.setPreviewStreamSize(new SizeSelector() {
-            @NonNull
-            @Override
+            @NonNull @Override
             public List<Size> select(@NonNull List<Size> source) {
                 ArrayList<Size> result = new ArrayList<>();
 
@@ -225,6 +223,7 @@ public class CameraViewHolder {
                 return result;
             }
         });
+
         cameraView.open();
 
         cameraView.addFrameProcessor(new FrameProcessor() {
@@ -244,7 +243,6 @@ public class CameraViewHolder {
                 mDecodeThreadPool.execute(() -> processNewFrame(data, size));
             }
         });
-
 
     }
 
@@ -322,7 +320,6 @@ public class CameraViewHolder {
         }
     }
 
-
 	private synchronized boolean recordVideo() {
 
 	    if (doingVideoProcessing)
@@ -333,8 +330,6 @@ public class CameraViewHolder {
         fileStoragePath.mkdirs();
 
         videoFile =  new File(fileStoragePath, ts1 + ".mp4");
-
-	// jcodec encoding replaced by CameraView's android system encoding.
 
 	// Once there is a place to send live streaming uploading, this could be
 	// done with CameraView by adding FileDescriptor support to the interface,
@@ -347,7 +342,7 @@ public class CameraViewHolder {
 
         if (cameraView.getFacing() == Facing.FRONT) {
             mtxVideoRotate.postRotate(-cameraView.getRotation());
-            mtxVideoRotate.postScale(-1, 1, cameraView.getWidth() / 2, cameraView.getHeight() / 2);
+            mtxVideoRotate.postScale(-1, 1, cameraView.getWidth() >> 1, cameraView.getHeight() >> 1);
         }
         else
            mtxVideoRotate.postRotate(cameraView.getRotation());
@@ -363,14 +358,12 @@ public class CameraViewHolder {
         return true;
     }
 
-
     public synchronized void stopCamera ()
     {
         if (cameraView != null) {
            cameraView.close();
         }
     }
-
 
     public void destroy ()
     {
@@ -379,46 +372,6 @@ public class CameraViewHolder {
             mConnection = null;
         }
         stopCamera();
-    }
-
-    public int getCorrectCameraOrientation(Facing facing, int orientation) {
-
-        int rotation = context.getWindowManager().getDefaultDisplay().getRotation();
-        int degrees = 0;
-
-        switch(rotation){
-            case Surface.ROTATION_0:
-                degrees = 0;
-                break;
-
-            case Surface.ROTATION_90:
-                degrees = 90;
-                break;
-
-            case Surface.ROTATION_180:
-                degrees = 180;
-                break;
-
-            case Surface.ROTATION_270:
-                degrees = 270;
-                break;
-
-        }
-
-        int result;
-        if(facing == Facing.FRONT){
-            result = (orientation + degrees) % 360;
-            result = (360 - result) % 360;
-        }else{
-            result = (orientation - degrees + 360) % 360;
-        }
-
-        return result;
-    }
-
-    public boolean doingVideoProcessing ()
-    {
-        return doingVideoProcessing;
     }
 
 }
