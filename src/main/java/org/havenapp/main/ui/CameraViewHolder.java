@@ -23,7 +23,6 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
-import android.view.Surface;
 
 import androidx.annotation.NonNull;
 
@@ -320,10 +319,10 @@ public class CameraViewHolder {
         }
     }
 
-	private synchronized boolean recordVideo() {
+	private synchronized void recordVideo() {
 
 	    if (doingVideoProcessing)
-	        return false;
+	        return;
         String ts1 = new SimpleDateFormat(Utils.DATE_TIME_PATTERN,
                 Locale.getDefault()).format(new Date());
         File fileStoragePath = new File(Environment.getExternalStorageDirectory(),prefs.getDefaultMediaStoragePath());
@@ -355,7 +354,6 @@ public class CameraViewHolder {
             finishVideoEncoding();
         }, seconds);
 
-        return true;
     }
 
     public synchronized void stopCamera ()
