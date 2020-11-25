@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/guardianproject/haven.svg)](https://travis-ci.org/guardianproject/haven)
+[![Build Status](https://travis-ci.org/guardianproject/haven.svg)](https://travis-ci.org/guardianproject/haven) ![Android CI](https://github.com/lukeswitz/haven/workflows/Android%20CI/badge.svg)
 
 # About Haven
 
