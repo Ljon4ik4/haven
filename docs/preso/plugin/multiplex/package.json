@@ -1,6 +1,6 @@
 {
   "name": "reveal-js-multiplex",
-  "version": "1.0.0",
+  "version": "4.1.0",
   "description": "reveal.js multiplex server",
   "homepage": "http://revealjs.com",
   "scripts": {
